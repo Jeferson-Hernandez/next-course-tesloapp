@@ -1,6 +1,9 @@
-import { ProductMobileSlideshow, ProductSlideshow, QuantitySelector, SizeSelector } from "@/components";
+export const revalidate = 604800;
+
+import { getProductBySlug } from "@/actions";
+import { ProductMobileSlideshow, ProductSlideshow, QuantitySelector, SizeSelector, StockLabel } from "@/components";
 import { titleFont } from "@/config/fonts";
-import { initialData } from "@/seed/seed";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 interface Props {
@@ -9,9 +12,34 @@ interface Props {
   }
 }
 
-export default function ProductPage({ params }: Props) {
+export async function generateMetadata(
+  { params }: Props,
+  // parent: ResolvingMetadata
+): Promise<Metadata> {
+  // read route params
+  const slug = params.slug
+
+  // fetch data
+  const product = await getProductBySlug(slug)
+
+  // optionally access and extend (rather than replace) parent metadata
+  // const previousImages = (await parent).openGraph?.images || []
+
+  return {
+    title: product?.title ?? 'Producto no encontrado',
+    description: product?.description ?? 'Descripcion no encontrada',
+    openGraph: {
+      title: product?.title ?? 'Producto no encontrado',
+      description: product?.description ?? 'Descripcion no encontrada',
+      // images: [], // https://misitio.com/products/image.png
+      images: [`/products/${product?.images[1]}`],
+    },
+  }
+}
+
+export default async function ProductPage({ params }: Props) {
   const { slug } = params
-  const product = initialData.products.find(product => product.slug === slug)
+  const product = await getProductBySlug(slug)
 
   if (!product) {
     notFound()
@@ -23,22 +51,23 @@ export default function ProductPage({ params }: Props) {
       <div className="cols-span-1 md:col-span-2">
 
         {/* mobile slideshow */}
-        <ProductMobileSlideshow 
-          title={product.title} 
+        <ProductMobileSlideshow
+          title={product.title}
           images={product.images}
           className="block md:hidden"
         />
 
         {/* desktop slideshow */}
-        <ProductSlideshow 
-          title={product.title} 
-          images={product.images} 
+        <ProductSlideshow
+          title={product.title}
+          images={product.images}
           className="hidden md:block"
         />
       </div>
 
       {/* detalles */}
       <div className="col-span-1 px-5">
+        <StockLabel slug={product.slug} />
         <h1 className={` ${titleFont.className} antialiased font-bold text-xl`}>
           {product.title}
         </h1>

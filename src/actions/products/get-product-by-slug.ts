@@ -3,7 +3,6 @@
 import prisma from "@/lib/prisma"
 
 export const getProductBySlug = async(slug: string) => {
-
   try {
     const productQuery = await prisma.product.findFirst({
       include: {

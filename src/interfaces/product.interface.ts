@@ -1,5 +1,5 @@
 export interface Product {
-    id: string
+    id: string;
     description: string;
     images: string[];
     inStock: number;
@@ -10,6 +10,16 @@ export interface Product {
     title: string;
     // type: Type;
     gender: Gender 
+}
+
+export interface CartProduct {
+  id: string;
+  slug: string;
+  title: string;
+  price: number;
+  quantity: number;
+  size: Size;
+  image: string;
 }
 
 export type Gender = 'men'|'women'|'kid'|'unisex'

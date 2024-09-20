@@ -1,3 +1,5 @@
+import bcryptjs from 'bcryptjs'
+
 interface SeedProduct {
     description: string;
     images: string[];
@@ -11,18 +13,38 @@ interface SeedProduct {
     gender: 'men'|'women'|'kid'|'unisex'
 }
 
+interface SeedUser {
+  email: string
+  password: string
+  name: string
+  role: 'admin'|'user'
+}
+
 type ValidSizes = 'XS'|'S'|'M'|'L'|'XL'|'XXL'|'XXXL';
 type ValidTypes = 'shirts'|'pants'|'hoodies'|'hats';
 
 interface SeedData {
+    users: SeedUser[]
     categories: string[]
     products: SeedProduct[]
 }
 
 
-
-
 export const initialData: SeedData = {
+    users: [
+      {
+        email: 'jeff@hotmail.com',
+        name: 'Jeferson Hernandez',
+        password: bcryptjs.hashSync('123456', 10),
+        role: 'admin'
+      },
+      {
+        email: 'clara@hotmail.com',
+        name: 'Clara Herrera',
+        password: bcryptjs.hashSync('123456', 10),
+        role: 'user'
+      }
+    ],
     categories: [
       'Shirts', 'Pants', 'Hoodies', 'Hats'
     ],
@@ -36,8 +58,8 @@ export const initialData: SeedData = {
             inStock: 7,
             price: 75,
             sizes: ['XS','S','M','L','XL','XXL'],
-            slug: "mens_chill_crew_neck_sweatshirt",
-            type: 'shirts',
+      slug: "mens_chill_crew_neck_sweatshirt",
+      type: 'shirts',
             tags: ['sweatshirt'],
             title: "Men’s Chill Crew Neck Sweatshirt",
             gender: 'men'
@@ -160,7 +182,7 @@ export const initialData: SeedData = {
             sizes: ['XS','S','M'],
             slug: "men_3d_large_wordmark_tee",
             type: 'shirts',
-            tags: ['shirt'],
+      tags: ['shirt'],
             title: "Men's 3D Large Wordmark Tee",
             gender: 'men'
         },

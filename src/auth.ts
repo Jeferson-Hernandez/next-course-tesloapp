@@ -40,6 +40,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     })
   ],
   callbacks: {
+    // TODO: middlewares for route protection
     // authorized({ auth, request}) {
     //   const isLoggedIn = !!auth?.user
 

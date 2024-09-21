@@ -1,14 +1,16 @@
 import { initialData } from "./seed"
 import prisma from '../lib/prisma';
+import { countries } from "./seed-countries";
 
 async function main() {
 
   // borrar registros
+  await prisma.userAddress.deleteMany()
   await prisma.user.deleteMany()
-
   await prisma.productImage.deleteMany()
   await prisma.product.deleteMany()
   await prisma.category.deleteMany()
+  await prisma.country.deleteMany()
 
   // si hay un problema con las relaciones al eliminar - usar este
   // await prisma.productImage.deleteMany(),
@@ -58,6 +60,10 @@ async function main() {
     await prisma.productImage.createMany({
       data: imagesData
     })
+  })
+
+  await prisma.country.createMany({
+    data: countries
   })
 
   console.log('Seed ejecutado correctamente')

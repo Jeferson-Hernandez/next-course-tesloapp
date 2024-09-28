@@ -9,16 +9,19 @@ export async function authenticate(
 ) {
   try {
     await signIn('credentials', formData);
+    return "Success"
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
         case 'CredentialsSignin':
           return 'CredentialsSignin';
+        case 'CallbackRouteError':
+          return error.cause?.err?.toString()
         default:
           return 'Something went wrong.';
       }
     }
-    return 'Success'
+    return "Success"
   }
 }
 

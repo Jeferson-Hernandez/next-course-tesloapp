@@ -5,12 +5,17 @@ import { countries } from "./seed-countries";
 async function main() {
 
   // borrar registros
+  await prisma.orderAddress.deleteMany()
+  await prisma.orderItem.deleteMany()
+  await prisma.order.deleteMany()
+
   await prisma.userAddress.deleteMany()
   await prisma.user.deleteMany()
+  await prisma.country.deleteMany()
+
   await prisma.productImage.deleteMany()
   await prisma.product.deleteMany()
   await prisma.category.deleteMany()
-  await prisma.country.deleteMany()
 
   // si hay un problema con las relaciones al eliminar - usar este
   // await prisma.productImage.deleteMany(),
